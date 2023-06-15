@@ -1,7 +1,8 @@
-import React, { Children, useEffect, useState, useLayoutEffect } from "react";
+import React, { useEffect, memo } from "react";
 
 const TimeBar = ({ className, chosenPokemon }) => {
 
+  console.log('Timebar render')
   useEffect(() => {
     const target = document.querySelector(`.${className}`);
     if (target) {
@@ -18,4 +19,4 @@ const TimeBar = ({ className, chosenPokemon }) => {
   );
 };
 
-export default TimeBar;
+export default memo(TimeBar);

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { css, keyframes } from '@emotion/react';
 import PokemonData from './PokemonData'
 import TimeBar from './TimeBar';
@@ -8,13 +8,6 @@ const bar = keyframes`
   width: 0;
   }
 `;
-
-const timeBarStyle = css({
-  background: 'black',
-  width: '200px',
-  height: '50px',
-  animation: `${bar} 5s linear`,
-});
 
 const getPokemonIds = () => {
   return Array(100).fill().map((_, i) => i + 1);
@@ -34,6 +27,13 @@ const GuessingGame = () => {
   const [wrongPokemons, setWrongPokemons] = useState([]);
   const inputRef = useRef();
   const timeoutId = useRef();
+
+  const timeBarStyle = useRef({
+    background: 'black',
+    width: '200px',
+    height: '50px',
+  });
+
 
   useEffect(() => {
     if (!isStart) {
@@ -57,24 +57,19 @@ const GuessingGame = () => {
     return () => {
       clearTimeout(timeoutId.current);
     };
-  }, [chosenPokemon]);
+  }, [isStart, chosenPokemon]);
 
   const onClickStart = () => {
     setIsStart(true);
-    pickPokemon();
-  }
-
-  const onClickRestart = () => {
-    setIsStart(true);
     setCorrectPokemons([]);
     setWrongPokemons([]);
     pickPokemon();
+    timeBarStyle.current.animation = `${bar} 5s linear`;
   }
 
-  const onClickMain = () => {
+  const onClickQuit = () => {
     setIsStart(false);
-    setCorrectPokemons([]);
-    setWrongPokemons([]);
+    delete timeBarStyle.current.animation;
   }
 
   const pickPokemon = () => {
@@ -89,6 +84,12 @@ const GuessingGame = () => {
   const onClickAnswerButton = (e) => {
     e.preventDefault();
     inputRef.current.focus();
+    setInputValue('');
+
+    if (!isStart) {
+      return;
+    }
+
     if (inputValue === chosenPokemon) {
       setResult({
         ox: 'O',
@@ -112,7 +113,6 @@ const GuessingGame = () => {
         return newWrongPokemons;
       });
     }
-    setInputValue('');
     pickPokemon();
   }
 
@@ -120,35 +120,26 @@ const GuessingGame = () => {
     setInputValue(e.target.value);
   }
 
-  if (!isStart) {
-    return (
-      <>
-        <button onClick={onClickStart} >시작</button>
-      </>
-    );
-  } else {
-    return (
-      <>
-        <TimeBar css={timeBarStyle} chosenPokemon={chosenPokemon} />
-        <div>포켓몬 이름 맞추기 게임</div>
+  return (
+    <>
+      <TimeBar css={timeBarStyle.current} chosenPokemon={chosenPokemon} />
+      <div>포켓몬 이름 맞추기 게임</div>
 
-        <div>{result.ox} 정답: {result.correctAnswer} 입력: {result.inputValue}</div>
-        <div>{chosenPokemon}</div>
-        <img />
-        <form>
-          <span>이름: </span>
-          <input ref={inputRef} type="text" value={inputValue} onChange={onChangeInput} />
-          <button onClick={onClickAnswerButton} >입력</button>
-        </form>
-        <div>맞춘 포켓몬: ({correctPokemons.length}) {correctPokemons.join(' ')}</div>
-        <div>틀린 포켓몬: ({wrongPokemons.length}) {wrongPokemons.join(' ')}</div>
-        <div>진행률 {`${correctPokemons.length + wrongPokemons.length}/1010`}</div>
-        <button onClick={onClickRestart}>다시하기</button>
-        <button onClick={onClickMain}>메인으로</button>
-      </>
-    );
-  }
-
+      <div>{result.ox} 정답: {result.correctAnswer} 입력: {result.inputValue}</div>
+      <div>{chosenPokemon}</div>
+      <img />
+      <form>
+        <span>이름: </span>
+        <input ref={inputRef} type="text" value={inputValue} onChange={onChangeInput} />
+        <button onClick={onClickAnswerButton} >입력</button>
+      </form>
+      <div>맞춘 포켓몬: ({correctPokemons.length}) {correctPokemons.join(' ')}</div>
+      <div>틀린 포켓몬: ({wrongPokemons.length}) {wrongPokemons.join(' ')}</div>
+      <div>진행률 {`${correctPokemons.length + wrongPokemons.length}/1010`}</div>
+      <button onClick={onClickStart}>시작</button>
+      <button onClick={onClickQuit}>그만하기</button>
+    </>
+  );
 }
 
 export default GuessingGame;
