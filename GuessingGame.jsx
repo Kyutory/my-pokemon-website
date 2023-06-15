@@ -29,8 +29,9 @@ const GuessingGame = () => {
   const [imgURL, setImgURL] = useState('');
   const [result, setResult] = useState({});
 
-  const [wrongPokemons, setWrongPokemons] = useState([]);
+
   const [correctPokemons, setCorrectPokemons] = useState([]);
+  const [wrongPokemons, setWrongPokemons] = useState([]);
   const inputRef = useRef();
   const timeoutId = useRef();
 
@@ -61,6 +62,19 @@ const GuessingGame = () => {
   const onClickStart = () => {
     setIsStart(true);
     pickPokemon();
+  }
+
+  const onClickRestart = () => {
+    setIsStart(true);
+    setCorrectPokemons([]);
+    setWrongPokemons([]);
+    pickPokemon();
+  }
+
+  const onClickMain = () => {
+    setIsStart(false);
+    setCorrectPokemons([]);
+    setWrongPokemons([]);
   }
 
   const pickPokemon = () => {
@@ -126,9 +140,11 @@ const GuessingGame = () => {
           <input ref={inputRef} type="text" value={inputValue} onChange={onChangeInput} />
           <button onClick={onClickAnswerButton} >입력</button>
         </form>
-        <div>맞춘 포켓몬: {correctPokemons.join(' ')}</div>
-        <div>틀린 포켓몬: {wrongPokemons.join(' ')}</div>
+        <div>맞춘 포켓몬: ({correctPokemons.length}) {correctPokemons.join(' ')}</div>
+        <div>틀린 포켓몬: ({wrongPokemons.length}) {wrongPokemons.join(' ')}</div>
         <div>진행률 {`${correctPokemons.length + wrongPokemons.length}/1010`}</div>
+        <button onClick={onClickRestart}>다시하기</button>
+        <button onClick={onClickMain}>메인으로</button>
       </>
     );
   }
