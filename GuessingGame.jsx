@@ -10,12 +10,12 @@ const bar = keyframes`
 `;
 
 const getPokemonIds = () => {
-  return Array(100).fill().map((_, i) => i + 1);
+  return Array(3).fill().map((_, i) => i + 1);
 }
 
 const GuessingGame = () => {
 
-  const [pokemonIds, setPokemonIds] = useState(getPokemonIds);
+  const pokemonIds = useRef(getPokemonIds);
   const [chosenPokemon, setChosenPokemon] = useState('');
   const [isStart, setIsStart] = useState(false);
   const [inputValue, setInputValue] = useState('');
@@ -34,7 +34,6 @@ const GuessingGame = () => {
     height: '50px',
   });
 
-
   useEffect(() => {
     if (!isStart) {
       return;
@@ -52,6 +51,9 @@ const GuessingGame = () => {
         return newWrongPokemons;
       });
       setInputValue('');
+      if (pokemonIds.current.length === 0) {
+        onClickEnd();
+      }
       pickPokemon();
     }, 5000);
     return () => {
@@ -59,27 +61,27 @@ const GuessingGame = () => {
     };
   }, [isStart, chosenPokemon]);
 
-  const onClickStart = () => {
+  const onClickStart = () => { // start or restart
     setIsStart(true);
     setCorrectPokemons([]);
     setWrongPokemons([]);
+    pokemonIds.current = getPokemonIds();
     pickPokemon();
     timeBarStyle.current.animation = `${bar} 5s linear`;
   }
 
-  const onClickQuit = () => {
+  const onClickEnd = () => { // quit or finish
     setIsStart(false);
     delete timeBarStyle.current.animation;
   }
 
   const pickPokemon = () => {
-    const candidates = [...pokemonIds];
-    const chosenId = candidates.splice(Math.floor(Math.random() * candidates.length), 1)[0];
+    console.log('pickpokemon');
+
+    const chosenId = pokemonIds.current.splice(Math.floor(Math.random() * pokemonIds.current.length), 1)[0];
     setChosenPokemon(PokemonData[chosenId]);
     setImgURL(`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${chosenId}.svg`);
-    setPokemonIds(candidates);
   }
-
 
   const onClickAnswerButton = (e) => {
     e.preventDefault();
@@ -113,6 +115,12 @@ const GuessingGame = () => {
         return newWrongPokemons;
       });
     }
+
+    if (pokemonIds.current.length === 0) {
+      onClickEnd();
+      return;
+    }
+
     pickPokemon();
   }
 
@@ -137,7 +145,7 @@ const GuessingGame = () => {
       <div>틀린 포켓몬: ({wrongPokemons.length}) {wrongPokemons.join(' ')}</div>
       <div>진행률 {`${correctPokemons.length + wrongPokemons.length}/1010`}</div>
       <button onClick={onClickStart}>시작</button>
-      <button onClick={onClickQuit}>그만하기</button>
+      <button onClick={onClickEnd}>그만하기</button>
     </>
   );
 }
