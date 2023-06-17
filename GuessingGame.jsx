@@ -9,13 +9,20 @@ const bar = keyframes`
   }
 `;
 
-const getPokemonIds = () => {
-  return Array(3).fill().map((_, i) => i + 1);
+const allPokemonIds = Array(1010).fill().map((_, i) => i + 1);
+
+const getRandomPokemonIds = (num) => {
+  const randomIds = [];
+  for (let i = 0; i < num; i++) {
+    const randomId = allPokemonIds.splice(Math.floor(Math.random() * allPokemonIds.length), 1)[0];
+    randomIds.push(randomId);
+  }
+  return randomIds;
 }
 
 const GuessingGame = () => {
 
-  const pokemonIds = useRef(getPokemonIds);
+  const pokemonIds = useRef([]);
   const [chosenPokemon, setChosenPokemon] = useState('');
   const [isStart, setIsStart] = useState(false);
   const [inputValue, setInputValue] = useState('');
@@ -25,7 +32,8 @@ const GuessingGame = () => {
 
   const [correctPokemons, setCorrectPokemons] = useState([]);
   const [wrongPokemons, setWrongPokemons] = useState([]);
-  const inputRef = useRef();
+  const inputRef1 = useRef();
+  const inputRef2 = useRef();
   const timeoutId = useRef();
 
   const timeBarStyle = useRef({
@@ -43,7 +51,7 @@ const GuessingGame = () => {
       setResult({
         ox: 'X',
         correctAnswer: chosenPokemon,
-        inputValue: inputValue,
+        inputAnswer: inputValue,
       });
       setWrongPokemons((prevWrongPokemons) => {
         const newWrongPokemons = [...prevWrongPokemons];
@@ -64,11 +72,16 @@ const GuessingGame = () => {
     };
   }, [isStart, chosenPokemon]);
 
-  const onClickStart = () => { // start or restart
+  const onClickStart = (e) => { // start or restart
+    e.preventDefault();
+    if (inputRef2.current.value > 1010 || inputRef2.current.value < 1) {
+      alert('1~1010의 숫자를 넣어주세요');
+      return;
+    }
     setIsStart(true);
     setCorrectPokemons([]);
     setWrongPokemons([]);
-    pokemonIds.current = getPokemonIds();
+    pokemonIds.current = getRandomPokemonIds(inputRef2.current.value);
     pickPokemon();
     timeBarStyle.current.animation = `${bar} 5s linear`;
   }
@@ -80,16 +93,14 @@ const GuessingGame = () => {
   }
 
   const pickPokemon = () => {
-    console.log('pickpokemon');
-
-    const chosenId = pokemonIds.current.splice(Math.floor(Math.random() * pokemonIds.current.length), 1)[0];
+    const chosenId = pokemonIds.current.pop();
     setChosenPokemon(PokemonData[chosenId]);
     setImgURL(`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${chosenId}.svg`);
   }
 
   const onClickAnswerButton = (e) => {
     e.preventDefault();
-    inputRef.current.focus();
+    inputRef1.current.focus();
     setInputValue('');
 
     if (!isStart) {
@@ -100,7 +111,7 @@ const GuessingGame = () => {
       setResult({
         ox: 'O',
         correctAnswer: chosenPokemon,
-        inputValue: inputValue,
+        inputAnswer: inputValue,
       });
       setCorrectPokemons((prevCorrectPokemons) => {
         const newCorrectPokemons = [...prevCorrectPokemons];
@@ -133,22 +144,25 @@ const GuessingGame = () => {
 
   return (
     <>
+      <form>
+        <input type="number" ref={inputRef2} defaultValue={30} placeholder={'1010까지'} />
+        <button onClick={onClickStart}>시작</button>
+      </form>
+      <button onClick={onClickEnd}>그만하기</button>
       <TimeBar css={timeBarStyle.current} chosenPokemon={chosenPokemon} />
       <div>포켓몬 이름 맞추기 게임</div>
 
-      <div>{result.ox} 정답: {result.correctAnswer} 입력: {result.inputValue}</div>
+      <div>{result.ox} 정답: {result.correctAnswer} 입력: {result.inputAnswer}</div>
       <div>{chosenPokemon}</div>
       <img />
       <form>
         <span>이름: </span>
-        <input ref={inputRef} type="text" value={inputValue} onChange={onChangeInput} />
+        <input type="text" ref={inputRef1} value={inputValue} onChange={onChangeInput} />
         <button onClick={onClickAnswerButton} >입력</button>
       </form>
       <div>맞춘 포켓몬: ({correctPokemons.length}) {correctPokemons.join(' ')}</div>
       <div>틀린 포켓몬: ({wrongPokemons.length}) {wrongPokemons.join(' ')}</div>
-      <div>진행률 {`${correctPokemons.length + wrongPokemons.length}/1010`}</div>
-      <button onClick={onClickStart}>시작</button>
-      <button onClick={onClickEnd}>그만하기</button>
+      <div>진행률 {`${correctPokemons.length + wrongPokemons.length}/${inputRef2.current?.value || 1010}`}</div>
     </>
   );
 }
