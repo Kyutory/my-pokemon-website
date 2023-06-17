@@ -15,7 +15,7 @@ const LinksStyle = css({
   display: 'flex',
   justifyContent: 'space-around',
   fontSize: '20px',
-})
+});
 
 const MainPage = () => {
   const [isMain, setIsMain] = useState(true);
@@ -38,13 +38,13 @@ const MainPage = () => {
               <Link to="guessing-game" onClick={onClickLink}>포켓몬 이름 맞추기 게임 시작하기</Link>
             </div>
             <div>
-              <Link to="searching-name" onClick={onClickLink}>포켓몬 이름 검색</Link>
+              <Link to="searching-pokemons" onClick={onClickLink}>포켓몬 이름 검색</Link>
             </div>
           </div>
         }
         <Routes>
-          <Route path="guessing-game" element={<GuessingGame setIsMain={setIsMain} />}></Route>
-          <Route path="searching-name"></Route>
+          <Route path="guessing-game" element={<GuessingGame />}></Route>
+          <Route path="searching-pokemons"></Route>
         </Routes>
       </BrowserRouter>
     </>
