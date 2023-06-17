@@ -27,11 +27,11 @@ const GuessingGame = () => {
   const [isStart, setIsStart] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [imgURL, setImgURL] = useState('');
+
   const [result, setResult] = useState({});
-
-
   const [correctPokemons, setCorrectPokemons] = useState([]);
   const [wrongPokemons, setWrongPokemons] = useState([]);
+
   const inputRef1 = useRef();
   const inputRef2 = useRef();
   const timeoutId = useRef();
@@ -94,8 +94,9 @@ const GuessingGame = () => {
 
   const pickPokemon = () => {
     const chosenId = pokemonIds.current.pop();
+    console.log(PokemonData[chosenId]);
     setChosenPokemon(PokemonData[chosenId]);
-    setImgURL(`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${chosenId}.svg`);
+    setImgURL(`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${chosenId}.png`);
   }
 
   const onClickAnswerButton = (e) => {
@@ -122,7 +123,7 @@ const GuessingGame = () => {
       setResult({
         ox: 'X',
         correctAnswer: chosenPokemon,
-        inputValue: inputValue,
+        inputAnswer: inputValue,
       });
       setWrongPokemons((prevWrongPokemons) => {
         const newWrongPokemons = [...prevWrongPokemons];
@@ -154,7 +155,7 @@ const GuessingGame = () => {
 
       <div>{result.ox} 정답: {result.correctAnswer} 입력: {result.inputAnswer}</div>
       <div>{chosenPokemon}</div>
-      <img />
+      <img src={imgURL} />
       <form>
         <span>이름: </span>
         <input type="text" ref={inputRef1} value={inputValue} onChange={onChangeInput} />
