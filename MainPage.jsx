@@ -3,6 +3,7 @@ import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import { css } from '@emotion/react'
 
 import GuessingGame from './GuessingGame';
+import SearchingPokemons from './SearchingPokemons';
 
 const headerStyle = css({
   display: 'flex',
@@ -35,7 +36,7 @@ const MainPage = () => {
         {isMain &&
           <div css={LinksStyle}>
             <div>
-              <Link to="guessing-game" onClick={onClickLink}>포켓몬 이름 맞추기 게임 시작하기</Link>
+              <Link to="guessing-game" onClick={onClickLink}>포켓몬 이름 맞추기 게임</Link>
             </div>
             <div>
               <Link to="searching-pokemons" onClick={onClickLink}>포켓몬 이름 검색</Link>
@@ -44,7 +45,7 @@ const MainPage = () => {
         }
         <Routes>
           <Route path="guessing-game" element={<GuessingGame />}></Route>
-          <Route path="searching-pokemons"></Route>
+          <Route path="searching-pokemons" element={<SearchingPokemons />}></Route>
         </Routes>
       </BrowserRouter>
     </>
