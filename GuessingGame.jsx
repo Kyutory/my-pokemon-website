@@ -51,10 +51,13 @@ const GuessingGame = () => {
         return newWrongPokemons;
       });
       setInputValue('');
+
       if (pokemonIds.current.length === 0) {
         onClickEnd();
+      } else {
+        pickPokemon();
       }
-      pickPokemon();
+
     }, 5000);
     return () => {
       clearTimeout(timeoutId.current);
@@ -72,6 +75,7 @@ const GuessingGame = () => {
 
   const onClickEnd = () => { // quit or finish
     setIsStart(false);
+    setChosenPokemon('');
     delete timeBarStyle.current.animation;
   }
 
@@ -118,10 +122,9 @@ const GuessingGame = () => {
 
     if (pokemonIds.current.length === 0) {
       onClickEnd();
-      return;
+    } else {
+      pickPokemon();
     }
-
-    pickPokemon();
   }
 
   const onChangeInput = (e) => {
