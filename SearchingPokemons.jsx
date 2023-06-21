@@ -13,9 +13,13 @@ const LAST_FULL_HANGUL_CODE = '힣'.charCodeAt();
 const FIRST_INITIAL_HANGUL_CODE = 'ㄱ'.charCodeAt();
 const LAST_INITIAL_HANGUL_CODE = 'ㅎ'.charCodeAt();
 
-const matchedDataStyle = css({
+const matchedDataListStyle = css({
   border: '1px solid black',
   width: '150px',
+});
+
+const foucsedDataStyle = css({
+  backgroundColor: 'wheat',
 });
 
 
@@ -29,7 +33,7 @@ const makeCustomData = () => {
   return [nameToId, names];
 }
 
-const getInitialByFullHangul = (fullHangul) => {
+const getInitialFromFullHangul = (fullHangul) => {
   if (fullHangul) {
     return INITIAL_HANGUL[Math.floor((fullHangul.charCodeAt() - '가'.charCodeAt()) / 588)];
   }
@@ -41,20 +45,40 @@ const SearchingPokemons = () => {
   const [inputValue, setInputValue] = useState('');
   const [imgURL, setImgURL] = useState('');
   const [matchedDataList, setMatchedDataList] = useState([]);
+  const [focusedListIndex, setFocusedListIndex] = useState(-1);
+
+  const inputRef = useRef();
+  const [isFocusInput, setIsFocusInput] = useState(false);
+
+  const resetFocusedListIndex = () => {
+    setFocusedListIndex(-1);
+  }
 
   const onClickButton = (e) => {
     e.preventDefault();
-    setMatchedDataList([]);
-    const searchedId = nameToId[inputValue];
+
+    let focusedData;
+    if (focusedListIndex === -1) {
+      focusedData = inputValue;
+    } else {
+      focusedData = matchedDataList[focusedListIndex];
+      setInputValue(focusedData);
+    }
+
+    const searchedId = nameToId[focusedData];
     if (searchedId) {
       setImgURL(`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${searchedId}.png`);
-      // `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${chosenId}.svg`
     } else {
       setImgURL('./image/no-result.jpg');
     }
+
+    resetFocusedListIndex();
+    inputRef.current.focus();
+    setMatchedDataList([]);
   }
 
   const onChangeInput = (e) => {
+    resetFocusedListIndex();
     const value = e.target.value;
     setInputValue(value);
     const valueCode = value.charCodeAt();
@@ -69,6 +93,38 @@ const SearchingPokemons = () => {
     }));
   }
 
+  const onKeyDownInput = (e) => {
+    switch (e.key) {
+      case 'ArrowUp':
+        setFocusedListIndex((prevFocusedListIndex) => {
+          if (prevFocusedListIndex > 0) {
+            return prevFocusedListIndex - 1;
+          }
+          return matchedDataList.length - 1;
+        });
+        break;
+      case 'ArrowDown':
+        setFocusedListIndex((prevFocusedListIndex) => {
+          if (prevFocusedListIndex < matchedDataList.length - 1) {
+            return prevFocusedListIndex + 1;
+          }
+          return 0;
+        });
+        break;
+      default:
+        break;
+    }
+  }
+
+  const onFocusInput = () => {
+    setIsFocusInput(true);
+  }
+
+  const onBlurInput = () => {
+    resetFocusedListIndex();
+    setIsFocusInput(false);
+  }
+
   const isMatchedDataByFullHangul = (name, value) => {
     let flag = value[0] === name[0];
     for (let i = 1; i < value.length; i++) {
@@ -78,9 +134,9 @@ const SearchingPokemons = () => {
   }
 
   const isMatchedDataByInitialHangul = (name, value) => {
-    let flag = value[0] === getInitialByFullHangul(name[0]);
+    let flag = value[0] === getInitialFromFullHangul(name[0]);
     for (let i = 1; i < value.length; i++) {
-      flag = flag && (value[i] === getInitialByFullHangul(name[i]));
+      flag = flag && (value[i] === getInitialFromFullHangul(name[i]));
     }
     return flag;
   }
@@ -88,10 +144,15 @@ const SearchingPokemons = () => {
   return (
     <>
       <form>
-        <input type="text" value={inputValue} onChange={onChangeInput} />
+        <input type="text" ref={inputRef} value={inputValue} onChange={onChangeInput}
+          onKeyDown={onKeyDownInput} onFocus={onFocusInput} onBlur={onBlurInput} />
         <button onClick={onClickButton}>검색</button>
       </form>
-      {matchedDataList.map((v) => <div css={matchedDataStyle}>{v}</div>)}
+      {(isFocusInput && matchedDataList.length) ?
+        <div css={matchedDataListStyle}>
+          {matchedDataList.map((data, index) =>
+            <div key={data + index} css={index === focusedListIndex ? foucsedDataStyle : false}>{data}</div>)}
+        </div> : false}
       <div>
         <img src={imgURL} />
       </div>
