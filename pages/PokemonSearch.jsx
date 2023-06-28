@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { css } from '@emotion/react';
-import PokemonData from './PokemonData';
+import PokemonData from '../PokemonData';
 
 const INITIAL_HANGUL = [
   'ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ',
@@ -39,7 +39,7 @@ const getInitialFromFullHangul = (fullHangul) => {
   }
 }
 
-const SearchingPokemons = () => {
+const PokemonSearch = () => {
   const [nameToId, names] = useMemo(makeCustomData, []);
 
   const [inputValue, setInputValue] = useState('');
@@ -160,4 +160,4 @@ const SearchingPokemons = () => {
   );
 }
 
-export default SearchingPokemons;
+export default PokemonSearch;

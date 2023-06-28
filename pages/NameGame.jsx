@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { css, keyframes } from '@emotion/react';
-import PokemonData from './PokemonData'
-import TimeBar from './TimeBar';
+import PokemonData from '../PokemonData'
+import TimeBar from '../components/TimeBar';
 
 const bar = keyframes`
   100% {
@@ -20,7 +20,7 @@ const getRandomPokemonIds = (num) => {
   return randomIds;
 }
 
-const GuessingGame = () => {
+const NameGame = () => {
 
   const pokemonIds = useRef([]);
   const [chosenPokemon, setChosenPokemon] = useState('');
@@ -168,4 +168,4 @@ const GuessingGame = () => {
   );
 }
 
-export default GuessingGame;
+export default NameGame;

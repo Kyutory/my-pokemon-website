@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDom from 'react-dom/client';
 
-import MainPage from './MainPage';
+import Home from './pages';
 
-ReactDom.createRoot(document.querySelector('#root')).render(<MainPage />);
+ReactDom.createRoot(document.querySelector('#root')).render(<Home />);
