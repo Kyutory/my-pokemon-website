@@ -1,23 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Helmet } from 'react-helmet';
-const Pokedex = require("pokeapi-js-wrapper")
 
 import AppLayout from '../components/AppLayout';
-import PageCard from '../components/PageCard';
 import SearchForm from '../components/SearchForm';
+import Card from '../components/Card';
+import CardInfo from '../components/CardInfo';
 
 const PokemonSearch = () => {
-  const [imgURL, setImgURL] = useState('');
-  const [selectedData, setSelectedData] = useState('');
+  const [searchInfo, setSearchInfo] = useState({});
 
   return (
     <AppLayout>
+      {console.log(searchInfo)}
       <Helmet>
         <title>포켓몬 | 검색</title>
       </Helmet>
-      <SearchForm setSelectedData={setSelectedData} setImgURL={setImgURL} />
-      {selectedData && <PageCard imgSrc={imgURL} name={selectedData} />}
-    </AppLayout>
+      <SearchForm setSearchInfo={setSearchInfo} />
+      {searchInfo.name &&
+        < Card name={searchInfo.name} imgSrc={searchInfo.imgURL} color={searchInfo.color}  >
+          <CardInfo searchInfo={searchInfo} />
+        </Card>}
+    </AppLayout >
   );
 }
 

@@ -2,8 +2,6 @@ import React, { } from 'react';
 import { css } from '@emotion/react';
 import { Link } from 'react-router-dom';
 
-import { defaultStyleLink } from '../pages';
-
 const LayoutStyle = css({
   height: '100vh',
   display: 'flex',

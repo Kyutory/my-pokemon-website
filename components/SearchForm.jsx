@@ -1,6 +1,8 @@
 import React, { useMemo, useRef, useState } from 'react';
-import PokemonData from '../PokemonData';
+import PokemonData, { PokemonInfoEnglishToKorean } from '../PokemonData';
 import MatchedDataList from './MatchedDataList';
+
+import P from '../pokeAPI-config';
 
 const INITIAL_HANGUL = [
   'ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ',
@@ -31,7 +33,8 @@ const getInitialFromFullHangul = (fullHangul) => {
   }
 }
 
-const SearchForm = ({ setSelectedData, setImgURL }) => {
+
+const SearchForm = ({ setSearchInfo }) => {
   const [nameToId, names] = useMemo(makeCustomData, []);
 
   const [inputValue, setInputValue] = useState('');
@@ -48,21 +51,38 @@ const SearchForm = ({ setSelectedData, setImgURL }) => {
   const onClickButton = (e) => {
     e.preventDefault();
 
-    let searchedId;
-    const focusedData = matchedDataList[focusedListIndex];
-    if (focusedData) {
-      searchedId = nameToId[focusedData];
-      setInputValue(focusedData);
-      setSelectedData(focusedData);
+    let searchedName = null;
+    if (focusedListIndex === -1) {
+      searchedName = inputValue;
     } else {
-      searchedId = nameToId[inputValue];
-      setSelectedData(inputValue);
+      searchedName = matchedDataList[focusedListIndex];
+      setInputValue(searchedName);
     }
+    let searchedId = nameToId[searchedName];
 
-    if (searchedId) {
-      setImgURL(`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${searchedId}.png`);
-    } else {
-      setImgURL('./image/no-result.jpg');
+    let name = '';
+    if (searchedId) { // 검색되는 포켓몬 아이디가 있을때
+      P.getPokemonByName(searchedId)
+        .then(function (response) {
+          console.log(response);
+          name = response.name;
+          setSearchInfo((prevSearchInfo) => {
+            return {
+              ...prevSearchInfo, name: searchedName,
+              id: searchedId,
+              imgURL: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${searchedId}.png`,
+              height: response.height,
+              weight: response.weight,
+              types: response.types.map((type) => PokemonInfoEnglishToKorean[type.type.name]),
+              stats: response.stats.map((stat) => ({ name: PokemonInfoEnglishToKorean[stat.stat.name], base_stat: stat.base_stat })),
+            };
+          })
+        }).catch(error => console.log(error));
+    } else { // 검색되는 포켓몬 아이디가 없을때
+      setSearchInfo({
+        name: `${searchedName}라는 포켓몬은 없습니다.`,
+        imgURL: './image/no-result.jpg',
+      });
     }
 
     resetFocusedListIndex();

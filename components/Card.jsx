@@ -11,7 +11,8 @@ const Wrapper = styled.div((props) => ({
   background: props.color,
 }));
 
-const PageCard = ({ name, imgSrc, color }) => {
+
+const Card = ({ children, name, imgSrc, color }) => {
   return (
     <Wrapper color={color}>
       <div>
@@ -25,8 +26,9 @@ const PageCard = ({ name, imgSrc, color }) => {
         />
       </div>
       <h3>{name}</h3>
-    </Wrapper >
+      {children}
+    </Wrapper>
   );
 }
 
-export default PageCard;
+export default Card;
