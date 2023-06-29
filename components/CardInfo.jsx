@@ -1,10 +1,15 @@
 import React, { } from 'react';
-import { css } from '@emotion/react';
+import styled from '@emotion/styled';
+
+const Wrapper = styled.div((props) => ({
+
+}));
 
 const CardInfo = ({ searchInfo }) => {
   const { types, height, weight, stats } = searchInfo;
+
   return (
-    searchInfo ? <>
+    searchInfo && <Wrapper types={types}>
       <div>
         {types?.map((type) => <div key={type}>{type}</div>)}
       </div>
@@ -18,7 +23,7 @@ const CardInfo = ({ searchInfo }) => {
         <div key={index}>
           {stat.name}: {stat.base_stat}
         </div>)}
-    </> : false
+    </Wrapper>
   );
 }
 

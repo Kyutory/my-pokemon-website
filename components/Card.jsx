@@ -6,8 +6,10 @@ const Wrapper = styled.div((props) => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  borderRadius: '15%',
-  border: '3px solid',
+  borderRadius: '15px',
+  border: '2px solid',
+  marginBottom: '30px',
+  padding: '15px 15px',
   background: props.color,
 }));
 
@@ -21,11 +23,11 @@ const Card = ({ children, name, imgSrc, color }) => {
           alt='이미지가 없습니다'
           style={{
             width: '180px',
-            borderRadius: '15%',
+            borderRadius: '15px',
           }}
         />
       </div>
-      <h3>{name}</h3>
+      {name && <h3>{name}</h3>}
       {children}
     </Wrapper>
   );

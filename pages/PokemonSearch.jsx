@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 
 import AppLayout from '../components/AppLayout';

@@ -1,8 +1,8 @@
 import React, { } from 'react';
-import { css } from '@emotion/react';
+import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 
-const LayoutStyle = css({
+const Wrapper = styled.div({
   height: '100vh',
   display: 'flex',
   flexDirection: 'column',
@@ -11,14 +11,14 @@ const LayoutStyle = css({
 
 const AppLayout = ({ children }) => {
   return (
-    <div css={LayoutStyle}>
+    <Wrapper>
       <header>
         <Link to="/"><h1>포켓몬</h1></Link>
       </header>
       <div>
         {children}
       </div>
-    </div>
+    </Wrapper>
   );
 }
 

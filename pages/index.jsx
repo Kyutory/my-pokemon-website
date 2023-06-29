@@ -6,15 +6,6 @@ import AppLayout from '../components/AppLayout';
 import Card from '../components/Card';
 
 const Home = () => {
-  const [isMain, setIsMain] = useState(true);
-
-  const onClickMain = () => {
-    setIsMain(true);
-  }
-
-  const onClickLink = () => {
-    setIsMain(false);
-  }
 
   return (
     <AppLayout >

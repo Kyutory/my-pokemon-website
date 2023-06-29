@@ -1,4 +1,10 @@
 import React, { useEffect, memo } from "react";
+import styled from '@emotion/styled';
+
+const Wrapper = styled.div({
+  width: '100%',
+  border: '1px solid'
+});
 
 const TimeBar = ({ className, chosenPokemon }) => {
 
@@ -12,9 +18,9 @@ const TimeBar = ({ className, chosenPokemon }) => {
   }, [chosenPokemon]);
 
   return (
-    <>
+    <Wrapper>
       <div css={className}></div>
-    </>
+    </Wrapper>
   );
 };
 
