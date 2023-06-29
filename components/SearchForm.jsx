@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState, useCallback } from 'react';
 import PokemonData, { PokemonInfoEnglishToKorean } from '../PokemonData';
 import MatchedDataList from './MatchedDataList';
 
@@ -33,6 +33,22 @@ const getInitialFromFullHangul = (fullHangul) => {
   }
 }
 
+const isMatchedDataByFullHangul = (name, value) => {
+  let flag = value[0] === name[0];
+  for (let i = 1; i < value.length; i++) {
+    flag = flag && (value[i] === name[i]);
+  }
+  return flag;
+}
+
+const isMatchedDataByInitialHangul = (name, value) => {
+  let flag = value[0] === getInitialFromFullHangul(name[0]);
+  for (let i = 1; i < value.length; i++) {
+    flag = flag && (value[i] === getInitialFromFullHangul(name[i]));
+  }
+  return flag;
+}
+
 
 const SearchForm = ({ setSearchInfo }) => {
   const [nameToId, names] = useMemo(makeCustomData, []);
@@ -44,11 +60,11 @@ const SearchForm = ({ setSearchInfo }) => {
   const inputRef = useRef();
   const [isFocusInput, setIsFocusInput] = useState(false);
 
-  const resetFocusedListIndex = () => {
+  const resetFocusedListIndex = useCallback(() => {
     setFocusedListIndex(-1);
-  }
+  }, []);
 
-  const onClickButton = (e) => {
+  const onClickButton = useCallback((e) => {
     e.preventDefault();
 
     let searchedName = null;
@@ -88,9 +104,9 @@ const SearchForm = ({ setSearchInfo }) => {
     resetFocusedListIndex();
     inputRef.current.focus();
     setMatchedDataList([]);
-  }
+  }, [inputValue, focusedListIndex]);
 
-  const onChangeInput = (e) => {
+  const onChangeInput = useCallback((e) => {
     resetFocusedListIndex();
     const value = e.target.value;
     setInputValue(value);
@@ -104,9 +120,9 @@ const SearchForm = ({ setSearchInfo }) => {
         return false;
       }
     }));
-  }
+  }, [names.length]);
 
-  const onKeyDownInput = (e) => {
+  const onKeyDownInput = useCallback((e) => {
     switch (e.key) {
       case 'ArrowUp':
         setFocusedListIndex((prevFocusedListIndex) => {
@@ -127,32 +143,16 @@ const SearchForm = ({ setSearchInfo }) => {
       default:
         break;
     }
-  }
+  }, [matchedDataList.length]);
 
-  const onFocusInput = () => {
+  const onFocusInput = useCallback(() => {
     setIsFocusInput(true);
-  }
+  }, []);
 
-  const onBlurInput = () => {
+  const onBlurInput = useCallback(() => {
     resetFocusedListIndex();
     setIsFocusInput(false);
-  }
-
-  const isMatchedDataByFullHangul = (name, value) => {
-    let flag = value[0] === name[0];
-    for (let i = 1; i < value.length; i++) {
-      flag = flag && (value[i] === name[i]);
-    }
-    return flag;
-  }
-
-  const isMatchedDataByInitialHangul = (name, value) => {
-    let flag = value[0] === getInitialFromFullHangul(name[0]);
-    for (let i = 1; i < value.length; i++) {
-      flag = flag && (value[i] === getInitialFromFullHangul(name[i]));
-    }
-    return flag;
-  }
+  }, []);
 
   return (
     <form>
