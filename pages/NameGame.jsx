@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { css, keyframes } from '@emotion/react';
 import PokemonData from '../PokemonData';
+import { Helmet } from 'react-helmet';
 
 import TimeBar from '../components/TimeBar';
 import AppLayout from '../components/AppLayout';
@@ -146,6 +147,9 @@ const NameGame = () => {
 
   return (
     <AppLayout>
+      <Helmet>
+        <title>포켓몬 | 이름게임</title>
+      </Helmet>
       <form>
         <input type="number" ref={inputRef2} defaultValue={30} placeholder={'1010까지'} />
         <button onClick={onClickStart}>시작</button>

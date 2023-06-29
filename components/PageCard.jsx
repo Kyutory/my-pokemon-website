@@ -17,6 +17,7 @@ const PageCard = ({ name, imgSrc, color }) => {
       <div>
         <img
           src={imgSrc}
+          alt='이미지가 없습니다'
           style={{
             width: '180px',
             borderRadius: '15%',
