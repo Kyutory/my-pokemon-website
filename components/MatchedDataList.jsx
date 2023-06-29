@@ -4,6 +4,8 @@ import { css } from '@emotion/react';
 const matchedDataListStyle = css({
   border: '1px solid black',
   width: '150px',
+  position: 'absolute',
+  backgroundColor: 'white',
 });
 
 const foucsedDataStyle = css({

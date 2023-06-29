@@ -43,6 +43,7 @@ module.exports = {
   },
 
   devServer: {
+    historyApiFallback: true,
     devMiddleware: { publicPath: '/dist' },
     static: { directory: path.resolve(__dirname) },
     hot: true,
