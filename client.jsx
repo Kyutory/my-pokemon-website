@@ -7,6 +7,8 @@ import Home from './pages';
 import NameGame from './pages/NameGame';
 import PokemonSearch from './pages/PokemonSearch';
 
+import P from './pokeAPI-config';
+
 const App = () => {
   return (
     <BrowserRouter>

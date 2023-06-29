@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
+const Pokedex = require("pokeapi-js-wrapper")
 
 import AppLayout from '../components/AppLayout';
 import PageCard from '../components/PageCard';
