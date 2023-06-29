@@ -1,22 +1,9 @@
 import React, { useState } from 'react';
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
-import { css } from '@emotion/react'
+import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet'
 
-import NameGame from './NameGame';
-import PokemonSearch from './PokemonSearch';
-
-const headerStyle = css({
-  display: 'flex',
-  justifyContent: 'center',
-  fontSize: '35px',
-  backgroundColor: 'orange',
-});
-
-const LinksStyle = css({
-  display: 'flex',
-  justifyContent: 'space-around',
-  fontSize: '20px',
-});
+import AppLayout from '../components/AppLayout';
+import PageCard from '../components/PageCard';
 
 const Home = () => {
   const [isMain, setIsMain] = useState(true);
@@ -31,23 +18,26 @@ const Home = () => {
 
   return (
     <>
-      <BrowserRouter>
-        <Link to="/" onClick={onClickMain}><header css={headerStyle}>포켓몬</header></Link>
-        {isMain &&
-          <div css={LinksStyle}>
-            <div>
-              <Link to="name-game" onClick={onClickLink}>포켓몬 이름 맞추기 게임</Link>
-            </div>
-            <div>
-              <Link to="pokemon-search" onClick={onClickLink}>포켓몬 이름 검색</Link>
-            </div>
-          </div>
-        }
-        <Routes>
-          <Route path="name-game" element={<NameGame />}></Route>
-          <Route path="pokemon-search" element={<PokemonSearch />}></Route>
-        </Routes>
-      </BrowserRouter>
+      <Helmet>
+        <title>포켓몬</title>
+      </Helmet>
+
+      <AppLayout >
+        <Link to="name-game" >
+          <PageCard
+            name="포켓몬 이름 맞추기"
+            imgSrc="https://64.media.tumblr.com/d7ca42feb2449e7c27cb815b782bd4f0/tumblr_inline_o42grsx8DJ1tcy5f4_540.jpg"
+            color="green"
+          />
+        </Link>
+        <Link to="pokemon-search">
+          <PageCard
+            name="포켓몬 검색"
+            imgSrc="https://blog.kakaocdn.net/dn/pWFlZ/btqXgpiSsn1/5fikiWoiYmwlipGykLFQfk/img.jpg"
+            color="tomato"
+          />
+        </Link>
+      </AppLayout>
     </>
   );
 }

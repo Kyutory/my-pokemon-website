@@ -2,6 +2,9 @@ import React, { useMemo, useRef, useState } from 'react';
 import { css } from '@emotion/react';
 import PokemonData from '../PokemonData';
 
+import AppLayout from '../components/AppLayout';
+import PageCard from '../components/PageCard';
+
 const INITIAL_HANGUL = [
   'ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ',
   'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ',
@@ -46,6 +49,7 @@ const PokemonSearch = () => {
   const [imgURL, setImgURL] = useState('');
   const [matchedDataList, setMatchedDataList] = useState([]);
   const [focusedListIndex, setFocusedListIndex] = useState(-1);
+  const [selectedData, setSelectedData] = useState('');
 
   const inputRef = useRef();
   const [isFocusInput, setIsFocusInput] = useState(false);
@@ -57,15 +61,18 @@ const PokemonSearch = () => {
   const onClickButton = (e) => {
     e.preventDefault();
 
-    let focusedData;
-    if (focusedListIndex === -1) {
-      focusedData = inputValue;
-    } else {
-      focusedData = matchedDataList[focusedListIndex];
+    let searchedId;
+
+    const focusedData = matchedDataList[focusedListIndex];
+    if (focusedData) {
+      searchedId = nameToId[focusedData];
       setInputValue(focusedData);
+      setSelectedData(focusedData);
+    } else {
+      searchedId = nameToId[inputValue];
+      setSelectedData(inputValue);
     }
 
-    const searchedId = nameToId[focusedData];
     if (searchedId) {
       setImgURL(`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${searchedId}.png`);
     } else {
@@ -142,21 +149,19 @@ const PokemonSearch = () => {
   }
 
   return (
-    <>
+    <AppLayout>
       <form>
         <input type="text" ref={inputRef} value={inputValue} onChange={onChangeInput}
           onKeyDown={onKeyDownInput} onFocus={onFocusInput} onBlur={onBlurInput} />
         <button onClick={onClickButton}>검색</button>
+        {(isFocusInput && matchedDataList.length) ?
+          <div css={matchedDataListStyle}>
+            {matchedDataList.map((data, index) =>
+              <div key={data + index} css={index === focusedListIndex ? foucsedDataStyle : false}>{data}</div>)}
+          </div> : false}
       </form>
-      {(isFocusInput && matchedDataList.length) ?
-        <div css={matchedDataListStyle}>
-          {matchedDataList.map((data, index) =>
-            <div key={data + index} css={index === focusedListIndex ? foucsedDataStyle : false}>{data}</div>)}
-        </div> : false}
-      <div>
-        <img src={imgURL} />
-      </div>
-    </>
+      {selectedData && <PageCard imgSrc={imgURL} name={selectedData} />}
+    </AppLayout>
   );
 }
 

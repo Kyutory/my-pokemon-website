@@ -1,7 +1,9 @@
-import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { css, keyframes } from '@emotion/react';
-import PokemonData from '../PokemonData'
+import PokemonData from '../PokemonData';
+
 import TimeBar from '../components/TimeBar';
+import AppLayout from '../components/AppLayout';
 
 const bar = keyframes`
   100% {
@@ -21,7 +23,6 @@ const getRandomPokemonIds = (num) => {
 }
 
 const NameGame = () => {
-
   const pokemonIds = useRef([]);
   const [chosenPokemon, setChosenPokemon] = useState('');
   const [isStart, setIsStart] = useState(false);
@@ -144,7 +145,7 @@ const NameGame = () => {
   }
 
   return (
-    <>
+    <AppLayout>
       <form>
         <input type="number" ref={inputRef2} defaultValue={30} placeholder={'1010까지'} />
         <button onClick={onClickStart}>시작</button>
@@ -164,7 +165,7 @@ const NameGame = () => {
       <div>맞춘 포켓몬: ({correctPokemons.length}) {correctPokemons.join(' ')}</div>
       <div>틀린 포켓몬: ({wrongPokemons.length}) {wrongPokemons.join(' ')}</div>
       <div>진행률 {`${correctPokemons.length + wrongPokemons.length}/${inputRef2.current?.value || 1010}`}</div>
-    </>
+    </AppLayout>
   );
 }
 
