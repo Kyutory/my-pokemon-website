@@ -120,12 +120,18 @@ const NameGame = () => {
     timeBarStyle.current.animation = `${bar} 5s linear`;
   }, [])
 
-  const onClickEnd = useCallback(() => { // quit or finish
+  const onClickQuit = useCallback(() => {
+    delete timeBarStyle.current.animation;
+    setIsStart(false);
+    setChosenPokemon('');
+  }, []);
+
+  const onClickEnd = useCallback(() => {
     delete timeBarStyle.current.animation;
     timeout2Id.current = setTimeout(() => {
       setIsStart(false);
       setChosenPokemon('');
-    }, 2500)
+    }, 2500);
   }, []);
 
   const pickPokemon = useCallback(() => {
@@ -203,7 +209,7 @@ const NameGame = () => {
           </label>
           <button onClick={onClickAnswerButton} >입력</button>
         </form>
-        <button style={{ marginLeft: '10px' }} onClick={onClickEnd}>그만하기</button>
+        <button style={{ marginLeft: '10px' }} onClick={onClickQuit}>그만하기</button>
         <div style={{ marginLeft: '10px' }} >진행률 {`${correctAnswers.length + wrongAnswers.length}/${inputRef2.current?.value || 1010}`}</div>
         {!isStart &&
           <GameResult
