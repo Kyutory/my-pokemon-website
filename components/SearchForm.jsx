@@ -84,7 +84,8 @@ const SearchForm = ({ setSearchInfo }) => {
           name = response.name;
           setSearchInfo((prevSearchInfo) => {
             return {
-              ...prevSearchInfo, name: searchedName,
+              ...prevSearchInfo,
+              name: searchedName,
               id: searchedId,
               imgURL: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${searchedId}.png`,
               height: response.height,

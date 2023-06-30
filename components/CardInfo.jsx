@@ -9,7 +9,7 @@ const CardInfo = ({ searchInfo }) => {
   const { types, height, weight, stats } = searchInfo;
 
   return (
-    searchInfo && <Wrapper types={types}>
+    <Wrapper types={types}>
       <div>
         {types?.map((type) => <div key={type}>{type}</div>)}
       </div>

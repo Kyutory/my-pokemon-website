@@ -18,7 +18,7 @@ const PokemonSearch = () => {
       <SearchForm setSearchInfo={setSearchInfo} />
       {searchInfo.name &&
         < Card name={searchInfo.name} imgSrc={searchInfo.imgURL} color={searchInfo.color}  >
-          <CardInfo searchInfo={searchInfo} />
+          {searchInfo.height && < CardInfo searchInfo={searchInfo} />}
         </Card>}
     </AppLayout >
   );
