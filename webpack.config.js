@@ -8,7 +8,7 @@ module.exports = {
   },
 
   entry: {
-    app: ['./client', './pokeapi-js-wrapper-sw'],
+    app: ['./client'],
   },
 
   module: {
@@ -39,7 +39,7 @@ module.exports = {
 
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: 'app.js',
+    filename: 'app.bundle.js',
     publicPath: '/dist',
   },
 };
