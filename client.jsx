@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDom from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import { Global } from '@emotion/react';
 
 import Home from './pages';
@@ -11,7 +11,7 @@ import P from './pokeAPI-config';
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Global styles={{
         'a': {
           textDecoration: 'none',
@@ -23,7 +23,7 @@ const App = () => {
         <Route path="name-game" element={<NameGame />} />
         <Route path="pokemon-search" element={<PokemonSearch />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
