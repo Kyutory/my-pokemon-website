@@ -102,7 +102,7 @@ const NameGame = () => {
     return () => {
       clearTimeout(timeoutId.current);
     };
-  }, [isStart, chosenPokemon, inputValue]);
+  }, [isStart, chosenPokemon]);
 
   const onClickStart = useCallback((e) => { // start or restart
     e.preventDefault();
