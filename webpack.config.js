@@ -1,15 +1,14 @@
 const path = require('path');
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  mode: 'development',
-  devtool: 'eval-source-map',
+  mode: 'production',
   resolve: {
     extensions: ['.jsx', '.js'],
   },
 
   entry: {
-    app: ['./client'],
+    app: ['./client', './pokeapi-js-wrapper-sw'],
   },
 
   module: {
@@ -27,26 +26,20 @@ module.exports = {
             runtime: 'automatic', importSource: '@emotion/react',
           }],
         ],
-        plugins: ['@emotion/babel-plugin', 'react-refresh/babel']
+        plugins: ['@emotion/babel-plugin']
       },
     }],
   },
 
   plugins: [
-    new ReactRefreshWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, '', 'index.html'),
+    }),
   ],
 
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'app.js',
     publicPath: '/dist',
-  },
-
-  devServer: {
-    historyApiFallback: true,
-    devMiddleware: { publicPath: '/dist' },
-    static: { directory: path.resolve(__dirname) },
-    hot: true,
-    liveReload: false,
   },
 };
