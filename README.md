@@ -2,4 +2,4 @@
 my pokemon website
 made for practice
 
-https://kyubird-s.github.io/pokemon-webgames
+https://ks-bird.github.io/my-pokemon-website
