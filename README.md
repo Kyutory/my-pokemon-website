@@ -1,4 +1,5 @@
 # pokemon-webgames
-some web games using Pokemon data
+my pokemon website
+made for practice
 
 https://kyubird-s.github.io/pokemon-webgames
