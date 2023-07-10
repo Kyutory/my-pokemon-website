@@ -145,24 +145,34 @@ const SearchForm = ({ setSearchInfo }) => {
     }
   }, [matchedDataList.length]);
 
-  const onFocusInput = useCallback(() => {
+  const onFocus = useCallback(() => {
     setIsFocusInput(true);
   }, []);
 
-  const onBlurInput = useCallback(() => {
+  const onBlur = useCallback(() => {
     resetFocusedListIndex();
     setIsFocusInput(false);
   }, []);
 
   return (
-    <form>
-      <input type="text" ref={inputRef} value={inputValue} onChange={onChangeInput}
-        onKeyDown={onKeyDownInput} onFocus={onFocusInput} onBlur={onBlurInput} />
+    <form tabIndex={-1} onFocus={onFocus} onBlur={onBlur}>
+      <input
+        type="text"
+        ref={inputRef}
+        value={inputValue}
+        onChange={onChangeInput}
+        onKeyDown={onKeyDownInput}
+      />
       <button onClick={onClickButton}>검색</button>
       {(isFocusInput && matchedDataList.length)
-        ? <MatchedDataList dataArr={matchedDataList} focusedListIndex={focusedListIndex} />
+        ? <MatchedDataList
+          dataArr={matchedDataList}
+          focusedListIndex={focusedListIndex}
+          setInputValue={setInputValue}
+          onClickButton={onClickButton}
+        />
         : false}
-    </form>
+    </form >
   )
 }
 
