@@ -1,5 +1,8 @@
+import PokemonIndex from './pages/PokemonIndex';
+import './global.css';
+
 function App() {
-  return <div>App</div>;
+  return <PokemonIndex />;
 }
 
 export default App;

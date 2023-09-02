@@ -1,4 +1,4 @@
-export const PokemonInfoEnglishToKorean = {
+export const PokemonTypeEnglishToKorean = {
   normal: '노말',
   fire: '불꽃',
   water: '물',
@@ -17,7 +17,6 @@ export const PokemonInfoEnglishToKorean = {
   dark: '악',
   steel: '강철',
   fairy: '페어리',
-
   hp: '체력',
   attack: '공격',
   defense: '방어',
