@@ -1,9 +1,13 @@
 import CardsGrid from '../components/CardsGrid';
+import AppLayout from '../components/AppLayout';
 
 function PokemonIndex() {
   return (
-    // <SearchForm/>
-    <CardsGrid />
+    <AppLayout>
+      {/* <Title /> */}
+      {/* <SearchForm /> */}
+      <CardsGrid />
+    </AppLayout>
   );
 }
 

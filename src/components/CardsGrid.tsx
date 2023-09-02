@@ -10,6 +10,7 @@ const Container = styled.div`
   grid-template-rows: repeat(auto-fill, 300px);
   grid-template-columns: repeat(auto-fill, 200px);
   gap: 30px 30px;
+  margin: 0px auto;
 `;
 
 function CardsGrid() {

@@ -22,7 +22,8 @@ const dummyPokemons = Array(25)
       speed: 15,
       base_stat: 20,
       types: types,
-      imgUrl: faker.image.avatar(),
+      // imgUrl: faker.image.avatar(),
+      imgUrl: '../../public/pikachu.png',
     };
   });
 

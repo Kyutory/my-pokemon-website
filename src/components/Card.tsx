@@ -1,10 +1,6 @@
 import { Pokemon } from '../types/pokemon';
 import styled from 'styled-components';
 
-type OwnProps = {
-  pokemon: Pokemon;
-};
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -57,6 +53,10 @@ const Oval = styled.div`
   border-radius: 12px;
   padding: 0.5% 2%;
 `;
+
+type OwnProps = {
+  pokemon: Pokemon;
+};
 
 function Card({ pokemon }: OwnProps) {
   const fullId = `#${'0'.repeat(4 - pokemon.id.toString().length)}${
