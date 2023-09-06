@@ -4,6 +4,46 @@ type OwnProps = {
   children: React.ReactElement;
 };
 
+const AppLayout = ({ children }: OwnProps) => {
+  return (
+    <div>
+      <HeaderContainer>
+        <Header>
+          <div className='title'>
+            <a href='/'>
+              <img src='../../public/pikachu.png' alt='' />
+              <h1>My Pokemon Website</h1>
+            </a>
+          </div>
+          <NavBar>
+            <div>
+              <a href='/'>Pokedex</a>
+            </div>
+            <div>
+              <a href='/'>Mini Game</a>
+            </div>
+          </NavBar>
+        </Header>
+      </HeaderContainer>
+      <Main>{children}</Main>
+      <FooterContainer>
+        <Footer>
+          Made by Kyuseok Park
+          <a
+            href='https://github.com/KS-Bird'
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            GitHub
+          </a>
+        </Footer>
+      </FooterContainer>
+    </div>
+  );
+};
+
+export default AppLayout;
+
 const HeaderContainer = styled.div`
   background-color: black;
   width: 100%;
@@ -59,43 +99,3 @@ const Footer = styled.footer`
     margin-left: 50px;
   }
 `;
-
-function AppLayout({ children }: OwnProps) {
-  return (
-    <div>
-      <HeaderContainer>
-        <Header>
-          <div className='title'>
-            <a href='/'>
-              <img src='../../public/pikachu.png' alt='' />
-              <h1>My Pokemon Website</h1>
-            </a>
-          </div>
-          <NavBar>
-            <div>
-              <a href='/'>Pokedex</a>
-            </div>
-            <div>
-              <a href='/'>Mini Game</a>
-            </div>
-          </NavBar>
-        </Header>
-      </HeaderContainer>
-      <Main>{children}</Main>
-      <FooterContainer>
-        <Footer>
-          Made by Kyuseok Park
-          <a
-            href='https://github.com/KS-Bird'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            GitHub
-          </a>
-        </Footer>
-      </FooterContainer>
-    </div>
-  );
-}
-
-export default AppLayout;
