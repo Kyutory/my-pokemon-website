@@ -1,4 +1,4 @@
-import { Pokemon } from '../types/pokemon';
+import { PokemonData } from '../types/PokemonData';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -55,7 +55,7 @@ const Oval = styled.div`
 `;
 
 type OwnProps = {
-  pokemon: Pokemon;
+  pokemon: PokemonData;
 };
 
 function Card({ pokemon }: OwnProps) {

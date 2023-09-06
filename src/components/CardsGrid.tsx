@@ -1,6 +1,7 @@
 import Card from './Card';
 import { useAppSelector } from '../app/hooks';
 import styled from 'styled-components';
+import { PokemonData } from '../types/PokemonData';
 
 const Container = styled.div`
   max-width: 1120px;
@@ -14,7 +15,9 @@ const Container = styled.div`
 `;
 
 function CardsGrid() {
-  const pokemons = useAppSelector((state) => state.pokemon.pokemons);
+  const pokemons: PokemonData[] = useAppSelector(
+    (state) => state.pokemon.pokemons,
+  );
 
   return (
     <Container>
